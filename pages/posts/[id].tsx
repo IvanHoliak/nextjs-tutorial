@@ -1,3 +1,4 @@
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from 'next/head';
 import Date from '../../components/date';
 
@@ -6,7 +7,15 @@ import { getAllPostIds, getPostData } from "../../lib/posts";
 
 import utilStyles from '../../styles/utils.module.css';
 
-export default function Post({ postData }) {
+interface IPost {
+    postData: {
+        title: string;
+        date: string;
+        contentHtml: string;
+    }
+};
+
+const Post: React.FC<IPost> = ({ postData }) => {
     return (
         <Layout>
             <Head>
@@ -23,7 +32,9 @@ export default function Post({ postData }) {
     );
 };
 
-export async function getStaticPaths() {
+export default Post;
+
+export const getStaticPaths: GetStaticPaths = async() => {
     const paths = getAllPostIds();
     return {
         paths,
@@ -31,8 +42,8 @@ export async function getStaticPaths() {
     };
 };
 
-export async function getStaticProps({ params }) {
-    const postData = await getPostData(params.id);
+export const getStaticProps: GetStaticProps = async({ params }) => {
+    const postData = await getPostData(params.id as string);
     return {
         props: {
             postData,

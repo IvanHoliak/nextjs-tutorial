@@ -8,7 +8,12 @@ import utilStyles from "../styles/utils.module.css";
 const name = "Ivan Holiak";
 export const siteTitle = "Next.js Sample Website";
 
-const Layout = ({ children, home }) => {
+interface ILayout {
+    children: React.ReactNode;
+    home?: boolean;
+};
+
+const Layout: React.FC<ILayout> = ({ children, home }) => {
     return (
         <div className={styles.container}>
             <Head>
